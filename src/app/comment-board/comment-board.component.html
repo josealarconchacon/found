@@ -1,0 +1,24 @@
+<div class="comment-board">
+  <div class="comments-container">
+    <div *ngFor="let comment of comments" class="comment">
+      <img [src]="comment.avatar" alt="User avatar" class="avatar" />
+      <div class="comment-content">
+        <div class="comment-header">
+          <span class="username">{{ comment.username }}</span>
+          <span class="timestamp">{{ comment.timestamp }}</span>
+        </div>
+        <p class="message">{{ comment.message }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="comment-input">
+    <input
+      type="text"
+      [(ngModel)]="newComment"
+      placeholder="Write a comment..."
+      (keyup.enter)="addComment()"
+    />
+    <button (click)="addComment()">Send</button>
+  </div>
+</div>

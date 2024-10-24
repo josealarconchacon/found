@@ -1,0 +1,40 @@
+<div class="filter-container">
+  <!-- New header section -->
+  <div class="filter-header">
+    <button class="expand-button">
+      <span class="plus-icon">+</span>
+    </button>
+    <h2 class="filter-title">Filter</h2>
+  </div>
+
+  <div class="filter-section">
+    <h3>Building</h3>
+    <div class="building-list">
+      <button *ngFor="let building of buildings" class="building-button">
+        {{ building }}
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <h3>Category</h3>
+    <div class="category-list">
+      <div
+        *ngFor="let category of categories"
+        class="category-item"
+        (click)="toggleCategory(category)"
+      >
+        <label class="checkbox-container">
+          <input
+            type="checkbox"
+            [checked]="selectedCategories.includes(category)"
+          />
+          <span class="checkmark"></span>
+        </label>
+        <span>{{ category }}</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="apply-filter" (click)="applyFilter()">Apply Filter</button>
+</div>
