@@ -1,24 +1,126 @@
 <div class="comment-board">
-  <div class="comments-container">
-    <div *ngFor="let comment of comments" class="comment">
-      <img [src]="comment.avatar" alt="User avatar" class="avatar" />
-      <div class="comment-content">
-        <div class="comment-header">
-          <span class="username">{{ comment.username }}</span>
-          <span class="timestamp">{{ comment.timestamp }}</span>
-        </div>
-        <p class="message">{{ comment.message }}</p>
+  <div class="comment-input-container">
+    <div class="comment-input-wrapper">
+      <img [src]="currentUserAvatar" alt="Your avatar" class="avatar" />
+      <div class="input-area">
+        <input
+          type="text"
+          [(ngModel)]="newComment"
+          placeholder="What are your thoughts?"
+          (keyup.enter)="addComment()"
+          class="comment-input"
+        />
+        <button
+          (click)="addComment()"
+          [disabled]="!newComment.trim()"
+          class="post-button"
+        >
+          Post
+        </button>
       </div>
     </div>
   </div>
 
-  <div class="comment-input">
-    <input
-      type="text"
-      [(ngModel)]="newComment"
-      placeholder="Write a comment..."
-      (keyup.enter)="addComment()"
-    />
-    <button (click)="addComment()">Send</button>
+  <div class="comments-container">
+    <div *ngFor="let comment of comments" class="comment">
+      <div class="comment-main">
+        <img [src]="comment.avatar" alt="User avatar" class="avatar" />
+        <div class="comment-content">
+          <div class="comment-header">
+            <div class="user-info">
+              <span class="username">{{ comment.username }}</span>
+              <span class="timestamp">{{ comment.timestamp }}</span>
+            </div>
+            <button class="more-options">
+              <i class="dots-icon">•••</i>
+            </button>
+          </div>
+
+          <p class="message">{{ comment.message }}</p>
+
+          <div class="comment-actions">
+            <button class="action-button" (click)="likeComment(comment)">
+              <i [class]="comment.isLiked ? 'heart-filled' : 'heart-outline'"
+                >♥</i
+              >
+              <span>{{ comment.likes || 0 }}</span>
+            </button>
+            <button class="action-button" (click)="toggleReplyInput(comment)">
+              <i class="reply-icon">↩</i>
+              <span>Reply</span>
+            </button>
+            <button class="action-button" *ngIf="comment.replies?.length">
+              <i class="thread-icon">↳</i>
+              <span>{{ comment.replies.length }} replies</span>
+            </button>
+          </div>
+
+          <div class="reply-input-container" *ngIf="comment.showReplyInput">
+            <img
+              [src]="currentUserAvatar"
+              alt="Your avatar"
+              class="avatar small"
+            />
+            <div class="input-area">
+              <input
+                type="text"
+                [(ngModel)]="replyContent[comment.id]"
+                placeholder="Write a reply..."
+                (keyup.enter)="addReply(comment)"
+                class="reply-input"
+              />
+              <div class="reply-actions">
+                <button
+                  class="cancel-button"
+                  (click)="toggleReplyInput(comment)"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="reply-button"
+                  [disabled]="!replyContent[comment.id]?.trim()"
+                  (click)="addReply(comment)"
+                >
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="replies-section" *ngIf="comment.replies?.length">
+        <div class="reply-thread-line"></div>
+        <div class="replies">
+          <div *ngFor="let reply of comment.replies" class="reply">
+            <img [src]="reply.avatar" alt="User avatar" class="avatar small" />
+            <div class="reply-content">
+              <div class="comment-header">
+                <div class="user-info">
+                  <span class="username">{{ reply.username }}</span>
+                  <span class="timestamp">{{ reply.timestamp }}</span>
+                </div>
+              </div>
+              <p class="message">{{ reply.message }}</p>
+              <div class="comment-actions">
+                <button class="action-button" (click)="likeReply(reply)">
+                  <i [class]="reply.isLiked ? 'heart-filled' : 'heart-outline'"
+                    >♥</i
+                  >
+                  <span>{{ reply.likes || 0 }}</span>
+                </button>
+                <button
+                  class="action-button"
+                  (click)="toggleReplyInput(comment)"
+                >
+                  <i class="reply-icon">↩</i>
+                  <span>Reply</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -14,9 +14,9 @@
           <i class="heart-icon"></i>
           <span>{{ post.likes }}</span>
         </button>
-        <button class="action-button">
+        <button class="action-button" (click)="showComments(post)">
           <i class="comment-icon"></i>
-          <span>{{ post.comments }} Comments</span>
+          <span>{{ post.comments.length }} Comments</span>
         </button>
       </div>
     </div>

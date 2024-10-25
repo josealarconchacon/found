@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
-
-interface Post {
-  id: number;
-  avatar: string;
-  title: string;
-  location: string;
-  likes: number;
-  comments: number;
-}
+import { Post } from '../shared/models/post.model';
+import { Comment } from '../shared/models/comment.model';
+import { CommentBoardService } from '../comment-board/service/comment-board.service';
 
 @Component({
   selector: 'app-main-board',
@@ -16,31 +10,47 @@ interface Post {
 })
 export class MainBoardComponent {
   posts: Post[] = [
-    {
-      id: 1,
-      avatar: 'assets/avatar1.jpg',
-      title: 'Found a hat next to the cafe',
-      location: 'B Building',
-      likes: 0,
-      comments: 5,
-    },
-    {
-      id: 2,
-      avatar: 'assets/avatar2.jpg',
-      title: 'Found a Book in the bathroom',
-      location: 'E Building',
-      likes: 3,
-      comments: 6,
-    },
-    {
-      id: 3,
-      avatar: 'assets/avatar3.jpg',
-      title: 'Found a laptop charger in B43',
-      location: 'M Building',
-      likes: 1,
-      comments: 0,
-    },
+    new Post(
+      1,
+      'assets/avatar1.jpg',
+      'Found a hat next to the cafe',
+      'B Building',
+      0,
+      [
+        new Comment(
+          1,
+          'assets/user1.jpg',
+          'Alice',
+          'Is it a black hat?',
+          '10:00 AM',
+          [] // Empty replies array
+        ),
+      ]
+    ),
+    new Post(
+      2,
+      'assets/avatar2.jpg',
+      'Found a Book in the bathroom',
+      'E Building',
+      3,
+      [
+        new Comment(
+          2,
+          'assets/user2.jpg',
+          'Bob',
+          'I think it’s mine. Can we meet?',
+          '11:00 AM',
+          [] // Empty replies array
+        ),
+      ]
+    ),
   ];
+
+  constructor(private commentBoardService: CommentBoardService) {}
+
+  showComments(post: Post) {
+    this.commentBoardService.setComments(post.comments);
+  }
 
   likePost(post: Post) {
     post.likes++;

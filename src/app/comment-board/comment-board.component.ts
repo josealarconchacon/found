@@ -1,51 +1,76 @@
-import { Component } from '@angular/core';
-
-interface Comment {
-  id: number;
-  avatar: string;
-  username: string;
-  message: string;
-  timestamp: string;
-}
+import { Component, OnInit } from '@angular/core';
+import { Comment } from '../shared/models/comment.model';
+import { CommentBoardService } from './service/comment-board.service';
 
 @Component({
   selector: 'app-comment-board',
   templateUrl: './comment-board.component.html',
   styleUrls: ['./comment-board.component.css'],
 })
-export class CommentBoardComponent {
-  comments: Comment[] = [
-    {
-      id: 1,
-      avatar: 'assets/amanda.jpg',
-      username: 'Amanda',
-      message:
-        'Hi Sally, I am Amanda. Thank you for posting about the book. When is the best to meet, and let me know if you have any specific requirement.',
-      timestamp: '2:30 PM',
-    },
-    {
-      id: 2,
-      avatar: 'assets/sally.jpg',
-      username: 'Sally',
-      message:
-        'Amazing. To avoid any mistakes. Could you tell me the name of the book? and also the color. if you guess right, them we can meet to give you the book.',
-      timestamp: '2:35 PM',
-    },
-  ];
-
+export class CommentBoardComponent implements OnInit {
+  comments: Comment[] = [];
   newComment: string = '';
+  replyContent: { [key: number]: string } = {};
+  currentUserAvatar: any;
+
+  constructor(private commentBoardService: CommentBoardService) {}
+
+  ngOnInit() {
+    this.commentBoardService.comments$.subscribe((comments) => {
+      this.comments = comments;
+    });
+  }
 
   addComment() {
     if (this.newComment.trim()) {
-      const comment: Comment = {
-        id: this.comments.length + 1,
-        avatar: 'assets/user.jpg',
-        username: 'You',
-        message: this.newComment,
-        timestamp: new Date().toLocaleTimeString(),
-      };
+      const comment = new Comment(
+        this.comments.length + 1,
+        'assets/user.jpg',
+        'You',
+        this.newComment,
+        new Date().toLocaleTimeString()
+      );
       this.comments.push(comment);
       this.newComment = '';
+    }
+  }
+
+  addReply(parentComment: Comment) {
+    const replyText = this.replyContent[parentComment.id]?.trim();
+    if (replyText) {
+      const reply = new Comment(
+        parentComment.replies.length + 1,
+        'assets/user.jpg',
+        'You',
+        replyText,
+        new Date().toLocaleTimeString()
+      );
+      parentComment.replies.push(reply);
+      this.replyContent[parentComment.id] = ''; // Clear input after reply
+    }
+  }
+
+  toggleReplyInput(comment: Comment) {
+    comment.showReplyInput = !comment.showReplyInput;
+  }
+
+  likeComment(comment: Comment) {
+    if (!comment.isLiked) {
+      comment.likes = (comment.likes || 0) + 1;
+      comment.isLiked = true;
+    } else {
+      comment.likes--;
+      comment.isLiked = false;
+    }
+  }
+
+  likeReply(reply: Comment) {
+    if (!reply.isLiked) {
+      reply.likes = (reply.likes || 0) + 1;
+      reply.isLiked = true;
+    } else {
+      reply.likes--;
+      reply.isLiked = false;
     }
   }
 }
