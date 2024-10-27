@@ -1,113 +1,130 @@
 .comment-board {
-  width: 100%;
-  max-width: 600px;
+  max-width: min(600px, 90vw);
+  min-width: 280px;
   margin: 0 auto;
   background: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: clamp(16px, 2vw, 20px);
+  padding: clamp(16px, 2vw, 20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .comment-input-container {
   background: #ffffff;
   border-bottom: 1px solid #e6e6e6;
-  padding-bottom: 20px;
+  padding-bottom: clamp(16px, 2vw, 20px);
 }
 
 .comment-input-wrapper {
   display: flex;
-  gap: 12px;
+  gap: clamp(8px, 1.5vw, 12px);
   align-items: flex-start;
 }
 
 .input-area {
   flex: 1;
   display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 
 .comment-input,
 .reply-input {
   width: 100%;
-  padding: 12px 16px;
+  padding: clamp(10px, 1.5vw, 12px) clamp(12px, 2vw, 16px);
   border: 1px solid #e6e6e6;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: clamp(13px, 1.5vw, 14px);
   resize: none;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
+  background-color: #f8f9fa;
 }
 
 .comment-input:focus,
 .reply-input:focus {
   border-color: #1da1f2;
   outline: none;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(29, 161, 242, 0.2);
 }
 
 .post-button,
 .reply-button {
   align-self: flex-end;
-  padding: 8px 20px;
+  padding: clamp(6px, 1vw, 8px) clamp(16px, 2vw, 20px);
   background-color: #1da1f2;
   color: white;
   border: none;
   border-radius: 20px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  font-size: clamp(12px, 1.5vw, 14px);
+}
+
+.post-button:hover,
+.reply-button:hover {
+  background-color: #1991db;
+  transform: translateY(-1px);
 }
 
 .post-button:disabled,
 .reply-button:disabled {
   background-color: #90cdf4;
   cursor: not-allowed;
+  transform: none;
 }
 
+/* Comments Section */
 .comments-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: clamp(16px, 3vw, 24px);
 }
 
 .comment {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(8px, 1.5vw, 12px);
 }
 
 .comment-main {
   display: flex;
-  gap: 12px;
+  gap: clamp(8px, 1.5vw, 12px);
 }
 
+/* Avatar */
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: clamp(32px, 5vw, 40px);
+  height: clamp(32px, 5vw, 40px);
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .avatar.small {
-  width: 32px;
-  height: 32px;
+  width: clamp(28px, 4vw, 32px);
+  height: clamp(28px, 4vw, 32px);
 }
 
 .comment-content {
   flex: 1;
+  min-width: 0;
 }
 
 .comment-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 4px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .user-info {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .username {
@@ -117,20 +134,22 @@
 
 .timestamp {
   color: #657786;
-  font-size: 13px;
+  font-size: clamp(12px, 1.3vw, 13px);
 }
 
 .message {
   margin: 4px 0;
   color: #14171a;
-  font-size: 14px;
+  font-size: clamp(13px, 1.5vw, 14px);
   line-height: 1.4;
+  word-wrap: break-word;
 }
 
 .comment-actions {
   display: flex;
-  gap: 16px;
+  gap: clamp(12px, 2vw, 16px);
   margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 .action-button {
@@ -140,7 +159,7 @@
   background: none;
   border: none;
   color: #657786;
-  font-size: 13px;
+  font-size: clamp(12px, 1.3vw, 13px);
   padding: 4px 8px;
   border-radius: 16px;
   cursor: pointer;
@@ -158,8 +177,8 @@
 
 .replies-section {
   position: relative;
-  margin-left: 20px;
-  padding-left: 32px;
+  margin-left: clamp(16px, 2vw, 20px);
+  padding-left: clamp(24px, 4vw, 32px);
 }
 
 .reply-thread-line {
@@ -174,21 +193,22 @@
 .replies {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: clamp(12px, 2vw, 16px);
 }
 
 .reply {
   display: flex;
-  gap: 12px;
+  gap: clamp(8px, 1.5vw, 12px);
 }
 
 .reply-content {
   flex: 1;
+  min-width: 0;
 }
 
 .reply-input-container {
   display: flex;
-  gap: 12px;
+  gap: clamp(8px, 1.5vw, 12px);
   margin-top: 12px;
   padding-top: 12px;
   border-top: 1px solid #e6e6e6;
@@ -199,16 +219,18 @@
   gap: 12px;
   justify-content: flex-end;
   margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 .cancel-button {
-  padding: 8px 16px;
+  padding: clamp(6px, 1vw, 8px) clamp(12px, 2vw, 16px);
   background: none;
   border: none;
   color: #657786;
   font-weight: 600;
   cursor: pointer;
   border-radius: 20px;
+  transition: background-color 0.2s ease;
 }
 
 .cancel-button:hover {
@@ -222,31 +244,40 @@
   color: #657786;
   cursor: pointer;
   border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
 .more-options:hover {
   background-color: #f5f8fa;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 480px) {
   .comment-board {
-    padding: 16px;
+    padding: 12px;
+    gap: 12px;
   }
 
   .comment-input-wrapper {
     flex-direction: column;
   }
 
-  .avatar {
-    width: 32px;
-    height: 32px;
+  .input-area {
+    width: 100%;
   }
 
-  .comment-actions {
-    gap: 12px;
+  .post-button,
+  .reply-button {
+    width: 100%;
+    justify-content: center;
   }
 
-  .action-button {
-    padding: 4px;
+  .comment-actions,
+  .reply-actions {
+    gap: 8px;
+  }
+
+  .replies-section {
+    margin-left: 12px;
+    padding-left: 20px;
   }
 }
