@@ -1,0 +1,70 @@
+<div class="form-container">
+  <h2 class="form-title">Share what you have Found</h2>
+
+  <form [formGroup]="foundItemForm" (ngSubmit)="shareItem()">
+    <div class="form-group">
+      <label for="description">Item Description</label>
+      <input
+        id="description"
+        type="text"
+        class="form-control"
+        placeholder="Enter Item Description"
+        formControlName="description"
+      />
+      <div
+        *ngIf="
+          foundItemForm.get('description')?.invalid &&
+          foundItemForm.get('description')?.touched
+        "
+        class="error-message"
+      >
+        Description is required and should be at least 5 characters long.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Where the item was found</label>
+      <select id="location" class="form-control" formControlName="location">
+        <option value="" disabled>Select</option>
+        <option value="C">C Building</option>
+        <option value="B">B Building</option>
+        <option value="E">E Building</option>
+        <option value="M">M Building</option>
+      </select>
+      <div
+        *ngIf="
+          foundItemForm.get('location')?.invalid &&
+          foundItemForm.get('location')?.touched
+        "
+        class="error-message"
+      >
+        Location is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category</label>
+      <select id="category" class="form-control" formControlName="category">
+        <option value="" disabled>Select</option>
+        <option value="clothing">Clothing</option>
+        <option value="books">Books</option>
+        <option value="electronics">Electronics</option>
+        <option value="keys">Keys</option>
+        <option value="others">Others</option>
+      </select>
+      <div
+        *ngIf="
+          foundItemForm.get('category')?.invalid &&
+          foundItemForm.get('category')?.touched
+        "
+        class="error-message"
+      >
+        Category is required.
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" [disabled]="foundItemForm.invalid">
+      Share Item
+    </button>
+  </form>
+</div>

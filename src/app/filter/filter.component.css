@@ -7,7 +7,6 @@
   margin: 0 auto;
 }
 
-/* New styles for header section */
 .filter-header {
   display: flex;
   align-items: center;
@@ -41,7 +40,6 @@
   margin: 0;
 }
 
-/* Rest of your existing styles remain the same */
 @media (min-width: 768px) {
   .filter-container {
     max-width: 800px;
