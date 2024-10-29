@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, input, OnInit } from '@angular/core';
 import { Post } from '../shared/models/post.model';
 import { Comment } from '../shared/models/comment.model';
 import { CommentBoardService } from '../comment-board/service/comment-board.service';
