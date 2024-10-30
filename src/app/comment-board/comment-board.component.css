@@ -8,6 +8,11 @@
   gap: clamp(16px, 2vw, 20px);
   padding: clamp(16px, 2vw, 20px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease-out;
+}
+
+.comment-board.submitting {
+  opacity: 0.7;
 }
 
 .comment-input-container {

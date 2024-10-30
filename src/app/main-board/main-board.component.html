@@ -14,7 +14,7 @@
           <i class="heart-icon"></i>
           <span>{{ post.likes }}</span>
         </button>
-        <button class="action-button" (click)="showComments(post)">
+        <button class="action-button" (click)="toggleComments(post)">
           <i class="comment-icon"></i>
           <span>{{ post.comments.length }} Comments</span>
         </button>

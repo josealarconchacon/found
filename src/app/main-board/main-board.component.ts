@@ -23,8 +23,8 @@ export class MainBoardComponent implements OnInit {
     });
   }
 
-  showComments(post: Post) {
-    this.commentBoardService.setComments(post.comments);
+  toggleComments(post: Post) {
+    this.commentBoardService.toggleComments(post.comments);
   }
 
   likePost(post: Post) {

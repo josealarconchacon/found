@@ -12,12 +12,19 @@ export class CommentBoardComponent implements OnInit {
   newComment: string = '';
   replyContent: { [key: number]: string } = {};
   currentUserAvatar: any;
+  isVisible: boolean = false;
 
   constructor(private commentBoardService: CommentBoardService) {}
 
   ngOnInit() {
     this.commentBoardService.comments$.subscribe((comments) => {
       this.comments = comments;
+    });
+    this.commentBoardService.isVisible$.subscribe((isVisible) => {
+      this.isVisible = isVisible;
+      if (!isVisible) {
+        this.newComment = '';
+      }
     });
   }
 
@@ -31,7 +38,7 @@ export class CommentBoardComponent implements OnInit {
         new Date().toLocaleTimeString()
       );
       this.comments.push(comment);
-      this.newComment = '';
+      this.commentBoardService.addCommentToPost(comment);
     }
   }
 
@@ -46,7 +53,9 @@ export class CommentBoardComponent implements OnInit {
         new Date().toLocaleTimeString()
       );
       parentComment.replies.push(reply);
-      this.replyContent[parentComment.id] = ''; // Clear input after reply
+      this.replyContent[parentComment.id] = '';
+      this.commentBoardService.addCommentToPost(reply);
+      this.commentBoardService.hideCommentBoard();
     }
   }
 

@@ -7,9 +7,27 @@ import { Comment } from '../../shared/models/comment.model';
 })
 export class CommentBoardService {
   private commentsSource = new BehaviorSubject<Comment[]>([]);
-  comments$ = this.commentsSource.asObservable();
+  private isVisibleSource = new BehaviorSubject<boolean>(false);
 
-  setComments(comments: Comment[]) {
-    this.commentsSource.next(comments);
+  comments$ = this.commentsSource.asObservable();
+  isVisible$ = this.isVisibleSource.asObservable();
+
+  toggleComments(comments: Comment[]) {
+    if (this.isVisibleSource.value) {
+      this.isVisibleSource.next(false);
+    } else {
+      this.commentsSource.next(comments);
+      this.isVisibleSource.next(true);
+    }
+  }
+
+  hideCommentBoard() {
+    this.isVisibleSource.next(false);
+  }
+
+  addCommentToPost(comment: Comment) {
+    const currentComments = [...this.commentsSource.value, comment];
+    this.commentsSource.next(currentComments);
+    this.hideCommentBoard();
   }
 }
