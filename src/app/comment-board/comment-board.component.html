@@ -49,7 +49,7 @@
               <i class="reply-icon">↩</i>
               <span>Reply</span>
             </button>
-            <button class="action-button" *ngIf="comment.replies?.length">
+            <button class="action-button" *ngIf="comment.replies.length">
               <i class="thread-icon">↳</i>
               <span>{{ comment.replies.length }} replies</span>
             </button>
@@ -78,7 +78,7 @@
                 </button>
                 <button
                   class="reply-button"
-                  [disabled]="!replyContent[comment.id]?.trim()"
+                  [disabled]="!replyContent[comment.id].trim()"
                   (click)="addReply(comment)"
                 >
                   Reply
@@ -89,7 +89,7 @@
         </div>
       </div>
 
-      <div class="replies-section" *ngIf="comment.replies?.length">
+      <div class="replies-section" *ngIf="comment.replies.length">
         <div class="reply-thread-line"></div>
         <div class="replies">
           <div *ngFor="let reply of comment.replies" class="reply">

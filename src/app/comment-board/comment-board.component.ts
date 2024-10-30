@@ -40,7 +40,7 @@ export class CommentBoardComponent implements OnInit {
     if (replyText) {
       const reply = new Comment(
         parentComment.replies.length + 1,
-        'assets/user.jpg',
+        'assets/profile.png',
         'You',
         replyText,
         new Date().toLocaleTimeString()
