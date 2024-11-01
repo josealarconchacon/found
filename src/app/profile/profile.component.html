@@ -1,9 +1,15 @@
 <div class="profile-container">
   <div class="profile-content">
-    <div class="profile-info">
-      <h3>{{ user.username }}</h3>
-      <p>{{ user.email }}</p>
-    </div>
-    <img [src]="user.avatar" alt="Profile picture" class="profile-avatar" />
+    <img
+      [src]="user.avatar"
+      alt="Profile picture"
+      class="profile-avatar"
+      (click)="goToProfileDetail()"
+    />
   </div>
 </div>
+
+<app-profile-detail
+  *ngIf="showDetail"
+  (closeDetail)="closeDetail()"
+></app-profile-detail>

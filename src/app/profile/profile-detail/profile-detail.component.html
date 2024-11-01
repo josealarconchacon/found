@@ -1,0 +1,79 @@
+<div class="profile-detail-container" [class.expanded]="isExpanded" @slideInOut>
+  <button (click)="close()">Close</button>
+  <div class="container">
+    <div class="sidebar">
+      <nav>
+        <ul>
+          <li class="active">My Profile</li>
+          <li>Settings</li>
+          <li>Listed Items</li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="main-content">
+      <div class="profile-header">
+        <div class="header-gradient"></div>
+        <div class="profile-info">
+          <div class="profile-photo">
+            <img
+              [src]="previewUrl || 'assets/default-avatar.jpg'"
+              alt="Profile photo"
+            />
+          </div>
+          <div class="profile-title">
+            <h1>Profile</h1>
+            <p>Update your photo and personal details</p>
+          </div>
+          <button class="edit-btn" (click)="enableEditing()">Edit</button>
+          <button
+            class="save-btn"
+            [ngClass]="{ disabled: !isEditing }"
+            [disabled]="!isEditing"
+            (click)="onSubmit()"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+
+      <form
+        [formGroup]="profileForm"
+        (ngSubmit)="onSubmit()"
+        class="profile-form"
+      >
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            placeholder="Name"
+            [disabled]="!isEditing"
+          />
+        </div>
+        <div class="form-group">
+          <label for="bio">Your Bio</label>
+          <textarea
+            id="bio"
+            formControlName="bio"
+            placeholder="Add a short bio..."
+            rows="4"
+            [disabled]="!isEditing"
+          ></textarea>
+          <small>Write a short introduction</small>
+        </div>
+        <div class="form-group">
+          <label for="profileImage">Profile Image</label>
+          <input
+            type="file"
+            id="profileImage"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            [disabled]="!isEditing"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

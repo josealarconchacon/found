@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { AddFoundItemComponent } from './filter/add-found-item/add-found-item.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ProfileDetailComponent } from './profile/profile-detail/profile-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MainBoardComponent,
     ProfileComponent,
     AddFoundItemComponent,
+    ProfileDetailComponent,
   ],
   imports: [
     BrowserModule,
