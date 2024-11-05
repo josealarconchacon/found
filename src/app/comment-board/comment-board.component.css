@@ -10,6 +10,29 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: opacity 0.3s ease-out;
 }
+/* --   */
+.comment-board-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #657786;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: #f5f8fa;
+}
+/* --  */
 
 .comment-board.submitting {
   opacity: 0.7;

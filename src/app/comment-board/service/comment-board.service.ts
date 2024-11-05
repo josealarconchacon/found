@@ -1,33 +1,69 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Comment } from '../../shared/models/comment.model';
+import { Post } from '../../shared/models/post.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommentBoardService {
-  private commentsSource = new BehaviorSubject<Comment[]>([]);
-  private isVisibleSource = new BehaviorSubject<boolean>(false);
+  private commentsSubject = new BehaviorSubject<Comment[]>([]);
+  private isVisibleSubject = new BehaviorSubject<boolean>(false);
+  private selectedPostIdSubject = new BehaviorSubject<number | null>(null);
+  public postsSubject = new BehaviorSubject<Post[]>([]);
 
-  comments$ = this.commentsSource.asObservable();
-  isVisible$ = this.isVisibleSource.asObservable();
+  comments$ = this.commentsSubject.asObservable();
+  isVisible$ = this.isVisibleSubject.asObservable();
+  selectedPostId$ = this.selectedPostIdSubject.asObservable();
+  posts$ = this.postsSubject.asObservable();
 
-  toggleComments(comments: Comment[]) {
-    if (this.isVisibleSource.value) {
-      this.isVisibleSource.next(false);
+  constructor() {
+    this.postsSubject.next([]);
+  }
+
+  toggleComments(postId: number, comments: Comment[]) {
+    const currentPostId = this.selectedPostIdSubject.value;
+
+    if (currentPostId === postId) {
+      this.hideCommentBoard();
     } else {
-      this.commentsSource.next(comments);
-      this.isVisibleSource.next(true);
+      this.selectedPostIdSubject.next(postId);
+      this.commentsSubject.next(comments);
+      this.isVisibleSubject.next(true);
     }
   }
 
   hideCommentBoard() {
-    this.isVisibleSource.next(false);
+    this.selectedPostIdSubject.next(null);
+    this.isVisibleSubject.next(false);
   }
 
-  addCommentToPost(comment: Comment) {
-    const currentComments = [...this.commentsSource.value, comment];
-    this.commentsSource.next(currentComments);
-    this.hideCommentBoard();
+  addCommentToPost(comment: Comment, postId: number) {
+    const currentComments = this.commentsSubject.value;
+    this.commentsSubject.next([...currentComments, comment]);
+
+    const currentPosts = this.postsSubject.value;
+    const postIndex = currentPosts.findIndex((post) => post.id === postId);
+    if (postIndex !== -1) {
+      const updatedPost = { ...currentPosts[postIndex] };
+      updatedPost.comments.push(comment);
+      updatedPost.likes = (updatedPost.likes || 0) + 1;
+      currentPosts[postIndex] = updatedPost;
+      this.postsSubject.next(currentPosts);
+    }
   }
+
+  updateComment(updatedComment: Comment) {
+    const currentComments = this.commentsSubject.value;
+    const updatedComments = currentComments.map((comment) =>
+      comment.id === updatedComment.id ? updatedComment : comment
+    );
+    this.commentsSubject.next(updatedComments);
+  }
+  getSelectedPostId(): number | null {
+    return this.selectedPostIdSubject.value;
+  }
+  // getPosts(): Post[] {
+  //   return this.postsSubject.getValue(); // Return the current value of posts
+  // }
 }

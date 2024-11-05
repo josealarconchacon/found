@@ -1,4 +1,4 @@
-<div class="app-container">
+<div class="app-container" [class.comment-board-open]="isCommentBoardVisible">
   <div class="profile-section">
     <app-profile></app-profile>
   </div>
@@ -8,7 +8,7 @@
   <div class="main-section">
     <app-main-board></app-main-board>
   </div>
-  <div class="comment-section">
+  <div class="comment-section" *ngIf="isCommentBoardVisible">
     <app-comment-board></app-comment-board>
   </div>
 </div>

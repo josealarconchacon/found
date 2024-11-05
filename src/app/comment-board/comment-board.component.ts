@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Comment } from '../shared/models/comment.model';
 import { CommentBoardService } from './service/comment-board.service';
+import { Post } from '../shared/models/post.model';
 
 @Component({
   selector: 'app-comment-board',
@@ -11,7 +12,7 @@ export class CommentBoardComponent implements OnInit {
   comments: Comment[] = [];
   newComment: string = '';
   replyContent: { [key: number]: string } = {};
-  currentUserAvatar: any;
+  currentUserAvatar: string = 'assets/user.jpg';
   isVisible: boolean = false;
 
   constructor(private commentBoardService: CommentBoardService) {}
@@ -31,14 +32,22 @@ export class CommentBoardComponent implements OnInit {
   addComment() {
     if (this.newComment.trim()) {
       const comment = new Comment(
-        this.comments.length + 1,
-        'assets/user.jpg',
+        Date.now(),
+        this.currentUserAvatar,
         'You',
         this.newComment,
         new Date().toLocaleTimeString()
       );
-      this.comments.push(comment);
-      this.commentBoardService.addCommentToPost(comment);
+
+      const postId = this.commentBoardService.getSelectedPostId();
+
+      if (postId !== null) {
+        this.commentBoardService.addCommentToPost(comment, postId);
+      } else {
+        console.error('No selected post ID available for adding comment');
+      }
+
+      this.newComment = '';
     }
   }
 
@@ -46,40 +55,61 @@ export class CommentBoardComponent implements OnInit {
     const replyText = this.replyContent[parentComment.id]?.trim();
     if (replyText) {
       const reply = new Comment(
-        parentComment.replies.length + 1,
-        'assets/profile.png',
+        Date.now(),
+        this.currentUserAvatar,
         'You',
         replyText,
         new Date().toLocaleTimeString()
       );
-      parentComment.replies.push(reply);
+
+      const updatedComment = { ...parentComment };
+      updatedComment.replies = [...(updatedComment.replies || []), reply];
+
+      this.commentBoardService.updateComment(updatedComment);
       this.replyContent[parentComment.id] = '';
-      this.commentBoardService.addCommentToPost(reply);
-      this.commentBoardService.hideCommentBoard();
+      parentComment.showReplyInput = false;
     }
   }
 
   toggleReplyInput(comment: Comment) {
     comment.showReplyInput = !comment.showReplyInput;
+    if (comment.showReplyInput) {
+      this.replyContent[comment.id] = '';
+    }
   }
 
   likeComment(comment: Comment) {
-    if (!comment.isLiked) {
-      comment.likes = (comment.likes || 0) + 1;
-      comment.isLiked = true;
+    const updatedComment = { ...comment };
+    if (!updatedComment.isLiked) {
+      updatedComment.likes = (updatedComment.likes || 0) + 1;
+      updatedComment.isLiked = true;
     } else {
-      comment.likes--;
-      comment.isLiked = false;
+      updatedComment.likes = Math.max(0, (updatedComment.likes || 1) - 1);
+      updatedComment.isLiked = false;
     }
+    this.commentBoardService.updateComment(updatedComment);
   }
 
-  likeReply(reply: Comment) {
-    if (!reply.isLiked) {
-      reply.likes = (reply.likes || 0) + 1;
-      reply.isLiked = true;
+  likeReply(parentComment: Comment, reply: Comment) {
+    const updatedParentComment = { ...parentComment };
+    const updatedReply = { ...reply };
+
+    if (!updatedReply.isLiked) {
+      updatedReply.likes = (updatedReply.likes || 0) + 1;
+      updatedReply.isLiked = true;
     } else {
-      reply.likes--;
-      reply.isLiked = false;
+      updatedReply.likes = Math.max(0, (updatedReply.likes || 1) - 1);
+      updatedReply.isLiked = false;
     }
+
+    updatedParentComment.replies = updatedParentComment.replies.map((r) =>
+      r.id === reply.id ? updatedReply : r
+    );
+
+    this.commentBoardService.updateComment(updatedParentComment);
+  }
+
+  closeCommentBoard() {
+    this.commentBoardService.hideCommentBoard();
   }
 }

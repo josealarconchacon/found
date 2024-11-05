@@ -1,4 +1,7 @@
-<div class="comment-board" *ngIf="isVisible">
+<div class="comment-board">
+  <div class="comment-board-header">
+    <button class="close-button" (click)="closeCommentBoard()">×</button>
+  </div>
   <div class="comment-input-container">
     <div class="comment-input-wrapper">
       <img [src]="currentUserAvatar" alt="Your avatar" class="avatar" />
@@ -103,7 +106,10 @@
               </div>
               <p class="message">{{ reply.message }}</p>
               <div class="comment-actions">
-                <button class="action-button" (click)="likeReply(reply)">
+                <button
+                  class="action-button"
+                  (click)="likeReply(comment, reply)"
+                >
                   <i [class]="reply.isLiked ? 'heart-filled' : 'heart-outline'"
                     >♥</i
                   >

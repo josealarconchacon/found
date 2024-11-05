@@ -1,4 +1,4 @@
-import { Component, Input, input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Post } from '../shared/models/post.model';
 import { Comment } from '../shared/models/comment.model';
 import { CommentBoardService } from '../comment-board/service/comment-board.service';
@@ -11,6 +11,7 @@ import { PostService } from '../shared/service/post';
 })
 export class MainBoardComponent implements OnInit {
   posts: Post[] = [];
+  selectedPostId: number | null = null;
 
   constructor(
     private commentBoardService: CommentBoardService,
@@ -20,11 +21,16 @@ export class MainBoardComponent implements OnInit {
   ngOnInit() {
     this.postService.posts$.subscribe((posts) => {
       this.posts = posts;
+      this.commentBoardService.postsSubject.next(posts);
     });
+
+    this.commentBoardService.selectedPostId$.subscribe(
+      (postId: number | null) => (this.selectedPostId = postId)
+    );
   }
 
   toggleComments(post: Post) {
-    this.commentBoardService.toggleComments(post.comments);
+    this.commentBoardService.toggleComments(post.id, post.comments);
   }
 
   likePost(post: Post) {
