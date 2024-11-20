@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PostService } from '../../shared/service/post';
+import { PostService } from '../../shared/service/post.service';
 import { Post } from '../../shared/models/post.model';
 
 @Component({
@@ -12,6 +12,7 @@ export class AddFoundItemComponent implements OnInit {
   foundItemForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private postService: PostService) {}
+
   ngOnInit(): void {
     this.foundItemForm = this.fb.group({
       description: ['', [Validators.required, Validators.minLength(5)]],
@@ -22,15 +23,16 @@ export class AddFoundItemComponent implements OnInit {
 
   shareItem() {
     if (this.foundItemForm.valid) {
-      const newPost = new Post(
-        Date.now(),
-        'assets/avatar-default.jpg',
-        this.foundItemForm.value.description,
-        this.foundItemForm.value.location,
-        0,
-        []
-      );
-      this.postService.addPost(newPost);
+      const formData = this.foundItemForm.value;
+      this.postService.addPost(formData).subscribe({
+        next: (response) => {
+          console.log('Post created:', response);
+          this.postService.getPosts();
+        },
+        error: (error) => {
+          console.error('Error creating post:', error);
+        },
+      });
     }
   }
 }

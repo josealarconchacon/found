@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from '../shared/models/post.model';
-import { Comment } from '../shared/models/comment.model';
 import { CommentBoardService } from '../comment-board/service/comment-board.service';
-import { PostService } from '../shared/service/post';
+import { PostService } from '../shared/service/post.service';
 
 @Component({
   selector: 'app-main-board',
@@ -19,7 +18,10 @@ export class MainBoardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.postService.getPosts();
+
     this.postService.posts$.subscribe((posts) => {
+      console.log('Updated posts in MainBoardComponent:', posts);
       this.posts = posts;
       this.commentBoardService.postsSubject.next(posts);
     });

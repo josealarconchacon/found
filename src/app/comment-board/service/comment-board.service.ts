@@ -63,7 +63,4 @@ export class CommentBoardService {
   getSelectedPostId(): number | null {
     return this.selectedPostIdSubject.value;
   }
-  // getPosts(): Post[] {
-  //   return this.postsSubject.getValue(); // Return the current value of posts
-  // }
 }

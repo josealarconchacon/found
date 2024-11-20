@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
-import {
-  BrowserModule,
-  provideClientHydration,
-} from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -41,7 +39,11 @@ import { ProfileDetailComponent } from './profile/profile-detail/profile-detail.
     MatButtonModule,
   ],
 
-  providers: [provideClientHydration(), provideAnimationsAsync()],
+  providers: [
+    provideClientHydration(),
+    provideAnimationsAsync(),
+    provideHttpClient(withFetch()), 
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
