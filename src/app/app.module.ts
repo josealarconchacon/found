@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  provideClientHydration,
+} from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -17,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AddFoundItemComponent } from './filter/add-found-item/add-found-item.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ProfileDetailComponent } from './profile/profile-detail/profile-detail.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +31,7 @@ import { ProfileDetailComponent } from './profile/profile-detail/profile-detail.
     ProfileComponent,
     AddFoundItemComponent,
     ProfileDetailComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,7 @@ import { ProfileDetailComponent } from './profile/profile-detail/profile-detail.
   providers: [
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch()), 
+    provideHttpClient(withFetch()),
   ],
   bootstrap: [AppComponent],
 })
