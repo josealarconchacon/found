@@ -4,15 +4,20 @@ import { CommentBoardService } from './comment-board/service/comment-board.servi
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'found';
   isCommentBoardVisible = false;
+  isLoggedIn = false;
 
   constructor(private commentBoardService: CommentBoardService) {
     this.commentBoardService.isVisible$.subscribe(
       (isVisible) => (this.isCommentBoardVisible = isVisible)
     );
+  }
+
+  onLoginSuccess() {
+    this.isLoggedIn = true;
   }
 }

@@ -1,9 +1,13 @@
-<!-- login.component.html -->
-<div class="login-container">
-  <h2>Login</h2>
+<div class="auth-container">
+  <h2 class="title">{{ isLogin ? "Login" : "Register" }}</h2>
 
-  <!-- Google Login Button -->
-  <div class="google-login-btn">
+  <div class="auth-toggle">
+    <button (click)="toggleForm()" class="toggle-btn">
+      Switch to {{ isLogin ? "Register" : "Login" }}
+    </button>
+  </div>
+
+  <div class="google-login-btn" *ngIf="isLogin">
     <button (click)="onGoogleSignIn()" class="google-btn">
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
@@ -13,41 +17,58 @@
     </button>
   </div>
 
-  <!-- OR Divider -->
-  <div class="or-divider">
+  <div class="or-divider" *ngIf="isLogin">
     <span>OR</span>
   </div>
 
-  <!-- Email/Password Login Form -->
-  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        class="form-control"
-        [(ngModel)]="email"
-        name="email"
-        required
-        placeholder="Enter your email"
-      />
-    </div>
+  <div class="form-container">
+    <form (ngSubmit)="onSubmit()" #authForm="ngForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          [(ngModel)]="email"
+          name="email"
+          required
+          placeholder="Enter your email"
+        />
+      </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        [(ngModel)]="password"
-        name="password"
-        required
-        placeholder="Enter your password"
-      />
-    </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          [(ngModel)]="password"
+          name="password"
+          required
+          placeholder="Enter your password"
+        />
+      </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">
-      Login
-    </button>
-  </form>
+      <div class="form-group" *ngIf="!isLogin">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          class="form-control"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          required
+          placeholder="Confirm your password"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!authForm.valid"
+      >
+        {{ isLogin ? "Login" : "Register" }}
+      </button>
+    </form>
+  </div>
 </div>
