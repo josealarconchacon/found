@@ -1,0 +1,69 @@
+/* login.component.css */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.google-login-btn {
+  margin-bottom: 20px;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.google-btn img {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.or-divider {
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.or-divider span {
+  background-color: #f1f1f1;
+  padding: 0 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  background-color: #aaa;
+}
