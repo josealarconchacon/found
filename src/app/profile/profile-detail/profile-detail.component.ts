@@ -27,7 +27,11 @@ import {
 })
 export class ProfileDetailComponent implements OnInit {
   @Output() closeDetail = new EventEmitter<void>();
-  isExpanded = false;
+  @Output() profileUpdated = new EventEmitter<{
+    avatar?: string;
+    username?: string;
+    bio?: string;
+  }>();
 
   profileForm: FormGroup;
   selectedFile: File | null = null;
@@ -36,8 +40,8 @@ export class ProfileDetailComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.profileForm = this.fb.group({
-      username: [''],
-      bio: [''],
+      username: ['Default User'],
+      bio: ['This is your bio.'],
     });
   }
 
@@ -45,10 +49,6 @@ export class ProfileDetailComponent implements OnInit {
 
   close() {
     this.closeDetail.emit();
-  }
-
-  toggleExpand() {
-    this.isExpanded = !this.isExpanded;
   }
 
   enableEditing() {
@@ -68,8 +68,13 @@ export class ProfileDetailComponent implements OnInit {
 
   onSubmit() {
     if (this.profileForm.valid) {
-      console.log(this.profileForm.value);
+      const updatedData = {
+        avatar: this.previewUrl || undefined,
+        ...this.profileForm.value,
+      };
+      this.profileUpdated.emit(updatedData); // Emit updated data to parent
       this.isEditing = false;
+      this.close();
     }
   }
 
