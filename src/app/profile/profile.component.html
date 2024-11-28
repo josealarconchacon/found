@@ -6,10 +6,14 @@
       class="profile-avatar"
       (click)="goToProfileDetail()"
     />
+    <div class="user-details">
+      <p>{{ user.username }}</p>
+    </div>
   </div>
 </div>
 
 <app-profile-detail
   *ngIf="showDetail"
   (closeDetail)="closeDetail()"
+  (profileUpdated)="updateProfile($event)"
 ></app-profile-detail>

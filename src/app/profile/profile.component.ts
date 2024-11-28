@@ -8,6 +8,8 @@ import { Component } from '@angular/core';
 export class ProfileComponent {
   user = {
     avatar: 'assets/profile.jpg',
+    username: 'Default User',
+    bio: 'This is your bio.',
   };
 
   showDetail = false;
@@ -18,5 +20,21 @@ export class ProfileComponent {
 
   closeDetail() {
     this.showDetail = false;
+  }
+
+  updateProfile(updatedData: {
+    avatar?: string;
+    username?: string;
+    bio?: string;
+  }) {
+    if (updatedData.avatar) {
+      this.user.avatar = updatedData.avatar;
+    }
+    if (updatedData.username) {
+      this.user.username = updatedData.username;
+    }
+    if (updatedData.bio) {
+      this.user.bio = updatedData.bio;
+    }
   }
 }
